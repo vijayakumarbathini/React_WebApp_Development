@@ -13,13 +13,11 @@ import * as actions from '../../store/actions/burgerBuilderActions'
 class BurgerBuilder extends Component {
 
     state = {
-        ingredients: null,
         purchasableState: false,
         purchasing: false,
         loading: false
     }
 
-    
     updatePurchaseState = (ing) => {
         let sum =0;
         sum = Object.keys(ing).map(ele => {
@@ -45,10 +43,13 @@ class BurgerBuilder extends Component {
 
         let orderSummary;
         let burger = <Spinner />
+        console.log(this.props.ing)
         if (this.props.ing) {
             orderSummary = <OrderSummary ingredientsSummary={this.props.ing} cancel={this.purchaseCancelHandler}
                 continue={this.purchaseContinueHandler} price={this.props.totalPrice} />
+                console.log('[BB] ing',this.props.ing)
             burger = <Aux>
+                
                 <Burger ingredients={this.props.ing} price={this.props.totalPrice} />
                 <BuildControls ingredientAdd={this.props.addIngredientHandler}
                     ingredientDelete={this.props.removeIngredientHandler}
@@ -58,7 +59,7 @@ class BurgerBuilder extends Component {
                     purchase={this.purchaseHandler} />
             </Aux>
         }
-        if (this.state.loading) {
+        if (this.props.loading) {
             orderSummary = <Spinner />
         }
         return (
@@ -73,10 +74,9 @@ class BurgerBuilder extends Component {
 }
 
 const mapStatetoProps = state => {
-
     return{
-        totalPrice: state.totalPrice,
-        ing: state.ingredients
+        totalPrice: state.bur.totalPrice,
+        ing: state.bur.ingredients
     }
 
 }
@@ -86,7 +86,7 @@ const mapDispatchtoProps = (dispatch) => {
         addIngredientHandler: (ingredient) => dispatch(actions.addIng(ingredient)),
 
         removeIngredientHandler: (ingredient) => dispatch(actions.removeIng(ingredient))
-        
+
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(BurgerBuilder, axios);

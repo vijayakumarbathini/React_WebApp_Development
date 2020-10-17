@@ -24,6 +24,9 @@ const input = (props) => {
         </select>
       );
       break;
+      case "password":
+        <input className={classes.InputElement} {...props.elementConfig} onChange={props.change}/>
+        break;
     default:
       inputElement = (
         <input className={classes.InputElement} {...props.elementConfig} onChange={props.change}/>

@@ -20,6 +20,7 @@ const INGREDIENTS_PRICE = {
 
 
 const burgerBuilderReducer = (state=initialState,action) => {
+    console.log(action.type)
     switch(action.type){
       
         case actionTypes.ADD_INGRIDENT:
@@ -33,6 +34,7 @@ const burgerBuilderReducer = (state=initialState,action) => {
                 totalPrice: state.totalPrice + INGREDIENTS_PRICE[action.ingredientName]
 
             }
+       
         case actionTypes.REMOVE_INGRIDENT:
             return {
                     ...state,

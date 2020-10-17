@@ -1,7 +1,6 @@
 
 //Action Creators
 import * as actionTypes from './actionTypes'
-import axios from '../../axios-order'
 
 export const addIng = (ingredient) => {
     return {
@@ -28,14 +27,10 @@ export const buildIng = (ingredients) => {
     }
 
 }
+
 export const setIngredients = () => {
 
     return dispatch => {
-        axios.get('https://react-backend-jay.firebaseio.com/orders/-MJWGtPe9eJlhpAeqEHk/ingredients.json').then(response => {
-            dispatch(buildIng(response.data))
-
-        }).catch(error => {
-            console.log('failed')
-        })
-    }
+            dispatch(buildIng);
+        }
 }
