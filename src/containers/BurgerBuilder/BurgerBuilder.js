@@ -43,11 +43,9 @@ class BurgerBuilder extends Component {
 
         let orderSummary;
         let burger = <Spinner />
-        console.log(this.props.ing)
         if (this.props.ing) {
             orderSummary = <OrderSummary ingredientsSummary={this.props.ing} cancel={this.purchaseCancelHandler}
                 continue={this.purchaseContinueHandler} price={this.props.totalPrice} />
-                console.log('[BB] ing',this.props.ing)
             burger = <Aux>
                 
                 <Burger ingredients={this.props.ing} price={this.props.totalPrice} />

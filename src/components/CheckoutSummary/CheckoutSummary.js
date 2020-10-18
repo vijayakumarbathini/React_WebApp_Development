@@ -18,7 +18,6 @@ const checkoutSummary = (props) => {
 }
 
 export const mapStateToProps = state =>{
-    console.log('[cs]',state)
     return{
         ingredients: state.bur.ingredients
     }

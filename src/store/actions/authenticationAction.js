@@ -23,22 +23,24 @@ export const signUp_Success = (idToken,userId) => {
 };
 
 export const logout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('expiresTimes');
   return {
     type: actionTypes.LOGOUT
   }
 }
 export const checkTimeout = (expireTime) => {
-
+  // eslint-disable-next-line radix
+  let exp = parseInt(expireTime * 1000);
   return dispatch => {
     setTimeout(
       dispatch(logout())
-    ,expireTime*1000)}
+    ,exp)}
 }
 //Async call
 export const signUp_Async = (email, password, isSingUp) => {
   return (dispatch) => {
     dispatch(signUp());
-    console.log(email,password)
     const auth_data = {
       email: email,
       password: password,
@@ -49,7 +51,7 @@ export const signUp_Async = (email, password, isSingUp) => {
     if(!isSingUp){
         url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDN4xdFrJnd0EoLhEM9TDdrVqmCjYB8PiA"
     }
-    console.log('authData',auth_data)
+
     axios
       .post(
         url,
@@ -57,8 +59,12 @@ export const signUp_Async = (email, password, isSingUp) => {
       )
       .then(response => {
           console.log(response);
+          const refreshTime = new Date().getTime + response.data.expriesIn * 1000
+          localStorage.setItem('token',response.data.idToken);
+           localStorage.setTimeout('expiresTimes',refreshTime);
           dispatch(signUp_Success(response.data.idToken, response.data.localId));
-          dispatch(checkTimeout(response.data.expires))
+          console.log(response.data)
+         // dispatch(checkTimeout(response.data.expiresIn))
       })
       .catch(error => {
           console.log(error)

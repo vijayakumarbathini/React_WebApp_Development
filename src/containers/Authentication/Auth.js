@@ -4,6 +4,7 @@ import Button from '../../components/UI/Button/Button'
 import classes from './Auth.css'
 import {connect} from 'react-redux'
 import {signUp_Async} from '../../store/actions/authenticationAction'
+import { Redirect } from "react-router-dom";
 
 
 class Auth extends Component {
@@ -61,7 +62,6 @@ inputChangedHandler = (event, inputIdentifier) => {
       });
     }
     let form = formElementsArray.map((element) => {
-        console.log(element)
       return (
         <Input
           key={element.id}
@@ -74,7 +74,11 @@ inputChangedHandler = (event, inputIdentifier) => {
     });
 
    
+    if(this.props.isAuthenticated){
+      return <Redirect to="/" />
+    }
     return (
+        
         <div className={classes.UserData}>
         <form onSubmit={this.submitHandler}>
             {form}
@@ -88,8 +92,13 @@ inputChangedHandler = (event, inputIdentifier) => {
   }
 }
 
+const mapStateToProps = state => {
+  return{
+     isAuthenticated : state.auth.userId !== null
+  }
+}
 const mapDispatchToProps = dispatch => {
     return {signUp : (email,password,isSignUp) => dispatch(signUp_Async(email,password,isSignUp))}
 }
 
-export default connect(null,mapDispatchToProps)(Auth);
+export default connect(mapStateToProps,mapDispatchToProps)(Auth);
